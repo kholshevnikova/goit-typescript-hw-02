@@ -10,3 +10,9 @@ export interface Image {
   };
   alt_description: string;
 }
+
+export interface PhotoResponse {
+    results: Image[];
+      total: number;
+      total_pages: number;
+}

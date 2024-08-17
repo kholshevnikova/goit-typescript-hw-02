@@ -6,7 +6,7 @@ import { getPhotos } from "../images-api";
 import { Toaster } from "react-hot-toast";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import { ImageModal } from "../ImageModal/ImageModal";
-import { Image } from "./App.types";
+import { Image, PhotoResponse } from "./App.types";
 
 
 
@@ -35,11 +35,6 @@ export default function App() {
   useEffect(() => {
     if (item === "") return;
 
-    interface PhotoResponse {
-    results: Image[];
-      total: number;
-      total_pages: number;
-}
 
     async function getImages() {
       try {
