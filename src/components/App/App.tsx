@@ -6,25 +6,28 @@ import { getPhotos } from "../images-api";
 import { Toaster } from "react-hot-toast";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import { ImageModal } from "../ImageModal/ImageModal";
+import { Image } from "./App.types";
+
+
 
 export default function App() {
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [item, setItem] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [totalImages, setTotalImages] = useState(0);
-  const [urlModal, setUrlModal] = useState("");
-  const [altModal, setAltModal] = useState("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [item, setItem] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [totalImages, setTotalImages] = useState<number>(0);
+  const [urlModal, setUrlModal] = useState<string>("");
+  const [altModal, setAltModal] = useState<string>("");
 
-  const handleSearch = (topic) => {
+  const handleSearch = (topic: string): void => {
     setImages([]);
     setItem(topic);
     setPage(1);
   };
 
-  const handleLoadMore = () => {
+  const handleLoadMore = ():void => {
     // console.log("load more");
     setPage((prevPage) => prevPage + 1);
   };
@@ -32,11 +35,17 @@ export default function App() {
   useEffect(() => {
     if (item === "") return;
 
+    interface PhotoResponse {
+    results: Image[];
+      total: number;
+      total_pages: number;
+}
+
     async function getImages() {
       try {
         setLoading(true);
         setError(false);
-        const data = await getPhotos(item, page);
+        const data: PhotoResponse = await getPhotos(item, page);
         setImages((prevImages) => [...prevImages, ...data.results]);
         setTotalImages(data.total);
       } catch (error) {
@@ -48,13 +57,13 @@ export default function App() {
     getImages();
   }, [page, item]);
 
-  const openModal = (url, alt) => {
+  const openModal = (url: string, alt: string) :void => {
     setIsOpen(true);
     setAltModal(alt);
     setUrlModal(url);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsOpen(false);
     setAltModal("");
     setUrlModal("");
@@ -76,7 +85,7 @@ export default function App() {
       )}
       <Toaster />
       {images.length > 0 && images.length < totalImages && (
-        <LoadMoreBtn onClick={handleLoadMore}>Load More</LoadMoreBtn>
+        <LoadMoreBtn onClick={handleLoadMore}/>
       )}
       <ImageModal
         modalIsOpen={isOpen}
